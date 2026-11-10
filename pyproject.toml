@@ -1,0 +1,46 @@
+[build-system]
+requires = ["hatchling>=1.25.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "jp-terrain-mcp"
+version = "0.1.0"
+description = "緯度・経度から、標高、地質、地震ハザードを調べるMCPサーバーです。"
+readme = "README.md"
+requires-python = ">=3.12"
+license = "MIT"
+dependencies = [
+  "httpx>=0.28.1,<1",
+  "mcp>=2.2.0,<3",
+  "pydantic>=2.13.5,<3",
+]
+
+[project.scripts]
+jp-terrain-mcp = "jp_terrain_mcp.__main__:main"
+gsi-elevation-mcp = "gsi_elevation_mcp.__main__:main"
+gsj-geology-mcp = "gsj_geology_mcp.__main__:main"
+jshis-mcp = "jshis_mcp.__main__:main"
+
+[dependency-groups]
+dev = [
+  "pytest>=8.4.1",
+  "pytest-asyncio>=1.1.0",
+  "respx>=0.22.0",
+  "ruff>=0.16.9",
+  "ty>=0.0.84",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/jp_terrain_mcp", "src/gsi_elevation_mcp", "src/gsj_geology_mcp", "src/jshis_mcp"]
+
+[tool.pytest.ini_options]
+asyncio_default_fixture_loop_scope = "function"
+
+addopts = "--import-mode=importlib"
